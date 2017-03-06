@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//testujemy komende pull
 int random_my(int min, int max)
 {
   int tmp;
