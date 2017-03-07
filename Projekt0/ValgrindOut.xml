@@ -12,8 +12,8 @@
   <line>Command: /home/michal/Desktop/School-projects/Projekt0/bin/Debug/Projekt0 </line>
 </preamble>
 
-<pid>13447</pid>
-<ppid>12005</ppid>
+<pid>15706</pid>
+<ppid>14973</ppid>
 <tool>memcheck</tool>
 
 <args>
@@ -32,7 +32,7 @@
 
 <status>
   <state>RUNNING</state>
-  <time>00:00:00:00.935 </time>
+  <time>00:00:00:00.157 </time>
 </status>
 
 <error>
@@ -136,7 +136,7 @@
 
 <status>
   <state>FINISHED</state>
-  <time>00:00:00:02.088 </time>
+  <time>00:00:00:01.071 </time>
 </status>
 
 <error>

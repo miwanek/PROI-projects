@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-
+// Michał Iwanek
 //testujemy komende pull
 int random_my(int min, int max)
 {
@@ -20,17 +20,17 @@ int random_my(int min, int max)
 
 int f()
 {
-  const int N = 10;
+  const int N = 12;
   int* x = (int *)malloc(N * sizeof(int));
   int i;
   int mean = 0;
-  for (i = 0; i <= N; ++i)
+  for (i = 0; i <= N; ++i)// powinno być <, nadpisujemy gdzieś pamięc
   {
     int val = random_my(0, 100);
     printf("%02d: %d\n", i, val);
     x[i] = val;
   }
-  for (i = 0; i <= N; ++i)
+  for (i = 0; i <= N; ++i)//błędnie liczy średnią
   {
     mean += x[i];
   }
@@ -40,7 +40,7 @@ int f()
 
 int main(int argc, char * argv[])
 {
-  int val = f();
+  int val = f();//pamięć nie jest zwalniana
   printf("Mean: %d\n", val);
   return 0;
 }
