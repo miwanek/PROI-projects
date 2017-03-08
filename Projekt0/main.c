@@ -24,17 +24,18 @@ int f()
   int* x = (int *)malloc(N * sizeof(int));
   int i;
   int mean = 0;
-  for (i = 0; i <= N; ++i)// powinno być <, nadpisujemy gdzieś pamięc
+  for (i = 0; i < N; ++i)// powinno być <, nadpisujemy gdzieś pamięc
   {
     int val = random_my(0, 100);
     printf("%02d: %d\n", i, val);
     x[i] = val;
   }
-  for (i = 0; i <= N; ++i)//błędnie liczy średnią
+  for (i = 0; i < N; ++i)//błędnie liczy średnią
   {
     mean += x[i];
   }
   mean /= N;
+  free(x);
   return mean;
 }
 
