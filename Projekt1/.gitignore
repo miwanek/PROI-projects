@@ -1,0 +1,11 @@
+# pliki, których nie nalezy kopiować
+# to te kończące się na:
+*.o
+*.cbp
+*.layout
+*.cbp
+*.depend
+*.xml
+# i te katalogi
+bin/
+obj/
