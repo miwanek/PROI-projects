@@ -26,6 +26,7 @@ int main()
 }
 void Menu()
 {
+
     weapon temp;
     vector<weapon>weapon_tab;
     temp.show();
@@ -45,51 +46,115 @@ void Menu()
     cout<<"Wciśnij 1, aby wyświetlić liste wszystkich dostepnych broni"<<endl;
     cout<<"Wciśnij 2, aby wybrac bron o podanym numerze"<<endl;
     cout<<"Wciśnij 3, aby dodac nowa bron do bazy"<<endl;
-    cout<<"Wciśnij 4, aby zapisac liste broni do pliku"<<endl;
-    cout<<"Wciśnij 5, aby odczytac liste broni z pliku"<<endl;
-    cout<<"Wciśnij 6, aby wyjsc z programu"<<endl;
+    cout<<"Wybierz 4, aby zmienic temperature otoczenia" << endl;
+    cout<<"Wybierz 5, aby pokazac temperature otoczenia" << endl;
+    cout<<"Wciśnij 6, aby zapisac liste broni do pliku"<<endl;
+    cout<<"Wciśnij 7, aby odczytac liste broni z pliku"<<endl;
+    cout<<"Wciśnij 8, aby wyjsc z programu"<<endl;
     int weapon_nr=-1;
     bool bylo=false;
-    znak=getchar();
+    znak=cin.get();
     clean();
         switch(znak)
         {
         case '1':
             cout<<"To wszystkie bronie jakie sie obecnie znajduja w strzelnicy"<<endl<<endl;
-            for(int i=0;i<weapon_tab.size();i++)
+            for(unsigned int i=0;i<weapon_tab.size();i++)
             {
                 cout<<"Bron o numerze: " <<i<<" znana jako: "<<weapon_tab[i].name<<endl;
             }
             break;
 
         case '2':
-            cout<<"Podaj poprawny  numer broni: ";
-            cin>>weapon_nr;
+            cout<< "Podaj poprawny  numer broni: ";
+            cin>> weapon_nr;
+            clean();
             if(cin.good()==false)
             {
                 cout<<"Bledne dane"<<endl;
+                    cin.get();
+                    clean();
                 break;
             }
-                for(int i=0; i<weapon_tab.size(); i++)
+                for(unsigned int i=0; i<weapon_tab.size(); i++)
                 {
-                    if(weapon_nr==i)
+                    if(weapon_nr==static_cast<int>(i))
                         {
-                            cout<<"Wybrales bron o nazwie: "<<weapon_tab[weapon_nr].name<<" oraz numerze: "<<weapon_nr<<endl<<endl;
-                            cout<<"Co chcesz zrobic?"<<endl;
-                            cout<<"Wybierz 1, aby wyswietlic parametry broni"<<endl;
-                            cout<<"Wybierz 3, aby poprawic parametry broni"<<endl;
-                            cout<<"Wybierz 4, aby usunac bron z bazy"<<endl;
-                            cout<<"Wybierz 5, aby strzelac do tarczy ogniem pojedyńczym" <<endl;
-                            cout<<"Wybierz 6, aby strzelac do tarczy ogniem automatyczny"<<endl;
-                            cout<<"Wybierz 6, aby przeladowac karabin"<<endl
-                            cout<<"Wybierz 7, aby schlodzic lufe do temperatury pokojowej"<<endl;
-                            cout<<"Wybierz 8, aby zalozyc tlumik na lufe karrabinu"<<endl;
-                            cout<<"Wybierz 9, aby
+                           do
+                           {
+                                system("clear");
+                                cout<< "Wybrales bron o nazwie: "<< weapon_tab[weapon_nr].name <<" oraz numerze: "<< weapon_nr << endl << endl;
+                                cout<< "Co chcesz zrobic?" << endl;
+                                cout<< "Wybierz 1, aby wyswietlic parametry broni" << endl;
+                                cout<< "Wybierz 2, aby poprawic parametry broni" << endl;
+                                cout<< "Wybierz 3, aby usunac bron z bazy" << endl;
+                                cout<< "Wybierz 4, aby porownac parametry tej oraz innej broni" << endl;
+                                cout<< "Wybierz 5, aby polaczyc dwie bronie w nowa lepsza sztuke" << endl;
+                                cout<< "Wybierz 6, aby strzelac do tarczy ogniem pojedyńczym" << endl;
+                                cout<< "Wybierz 7, aby strzelac do tarczy ogniem automatyczny" << endl;
+                                cout<< "Wybierz 8, aby uzupełnić magazynek" << endl;
+                                cout<< "Wybierz 9, aby schlodzic lufe do temperatury pokojowej" << endl;
+                                cout<< "Wybierz 0, aby zalozyc tlumik na lufe" << endl;
+                                cout<< "Wybierz a, aby zdjac tlumik z lufy" << endl;
+                                cout<< "Wybierz b, aby rozlozyc trojnog" << endl;
+                                cout<< "Wybierz c, aby zlozyc trojnog" << endl;
+                                cout<< "Wybierz d, aby odlozyc bron na miejsce" << endl;
+                                akcja=cin.get();
+                                clean();
+                            switch(akcja)
+                            {
+                                case '1':
+                                    weapon_tab[weapon_nr].show();
+                                    break;
+                                case '2':
+                                    break;
 
-                            bylo=true;
-                        }
+                                case '3':
+                                    break;
 
+                                case '4':
+                                    break;
 
+                                case '5':
+                                    break;
+
+                                case '6':
+                                    break;
+
+                                case '7':
+                                    break;
+
+                                case '8':
+                                    weapon_tab[weapon_nr].reload();
+                                    break;
+
+                                case '9':
+                                    break;
+
+                                case '0':
+                                    break;
+
+                                case 'a':
+                                    break;
+
+                                case 'b':
+                                    break;
+
+                                case 'c':
+                                    break;
+
+                                case 'd':
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                            cin.get();
+                            clean();
+
+                            } while(akcja!='d');
+                        bylo=true;
+                    }
                 }
             if(bylo==false){ cout<<"Nie ma takiej broni w skladzie"<<endl;}
             break;
@@ -102,12 +167,20 @@ void Menu()
             break;
             }
         case '4':
-               cout<<"4"<<endl;
+            weapon::change_temperature();
             break;
         case '5':
-               cout<<"5"<<endl;
+            weapon::current_temperature();
             break;
         case '6':
+            break;
+
+        case '7':
+               cout<<"4"<<endl;
+            break;
+
+        case '8':
+               cout<<"5"<<endl;
             break;
 
         default:
