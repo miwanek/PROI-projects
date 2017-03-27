@@ -21,6 +21,7 @@ class weapon
     float weight;
     unsigned int accuracy;
     unsigned int firerate;
+
 };
 
 #endif // WEAPON_H
