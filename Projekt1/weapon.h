@@ -7,25 +7,48 @@
 class weapon
 {
     public:
+
         void show();
-        void reload();
         void cool();
-        static void change_temperature();
+        static void change_temperature(int celc);
         static void current_temperature();
         int fire();
         int autofire();
-
+        void operator--(int);
+        void operator++(int);
+        void operator!();
+        void operator&();
         std:: string name;
 
-        weapon();
+        class magazine
+            {
+
+            public:
+                void reload();
+                void show2();
+                magazine( int magazine_size1, std::string magazine_type1);
+                ~magazine();
+
+            private:
+                std::string magazine_type;
+                unsigned int ammo; // liczba kul w obecnym magazynku
+                unsigned int magazine_size;
+            };
+        magazine magazynek;
+
+
+        weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
+              unsigned int firerate1, std::string name1, bool full_auto1,
+               unsigned int magazine_size1, std::string magazine_type1, bool silencer_allowed1, bool tripod_allowed1, bool tripod1, bool silencer1);
+
+
+
         ~weapon();
 
     private:
-    std:: string magazine_type;
+
     int current_temp; //temperatura lufy
     float caliber; //kaliber broni
-    unsigned int ammo; // liczba kul w obecnym magazynku
-    unsigned int magazine_size;
     unsigned int range;
     float weight;
     unsigned int accuracy;
