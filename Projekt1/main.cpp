@@ -17,7 +17,8 @@ int main()
 {
     srand(time(NULL));
     #ifdef _DEBUG
-        cout << "Testujemy tralalala"<<endl;
+        weapon::tests();
+
     #endif
     Menu::Mainmenu();
 

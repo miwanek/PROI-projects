@@ -1,16 +1,18 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <cassert>
 
 
 #include "weapon.h"
+#include "menu.h"
 
 
 void clean();
 int weapon::temp=20;
 
 // pierwszy najbardziej ogólny konstruktor
-weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
+weapon::weapon(unsigned int range1, unsigned int weight1, unsigned int caliber1, unsigned int accuracy1,
                unsigned int firerate1, std::string name1, bool full_auto1,
                 unsigned int magazine_size1, std::string magazine_type1, bool silencer_allowed1, bool tripod_allowed1, bool tripod1, bool silencer1):
 
@@ -37,7 +39,7 @@ weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int 
 }
 
 // Standradowy magazynek i ekstra bajery
-weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
+weapon::weapon(unsigned int range1, unsigned int weight1, unsigned int caliber1, unsigned int accuracy1,
                unsigned int firerate1, std::string name1, bool full_auto1,
                  bool silencer_allowed1, bool tripod_allowed1, bool tripod1, bool silencer1):
 
@@ -64,7 +66,7 @@ weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int 
 }
 
 // Standradowy magazynek bez ekstra bajerów
-weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
+weapon::weapon(unsigned int range1, unsigned int weight1, unsigned int caliber1, unsigned int accuracy1,
                unsigned int firerate1, std::string name1, bool full_auto1 ):
 
     magazine( 30 , "standardowy" ),
@@ -90,7 +92,7 @@ weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int 
 }
 
 // Specjalny magazynek bez ekstra bajerów
-weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
+weapon::weapon(unsigned int range1, unsigned int weight1, unsigned int caliber1, unsigned int accuracy1,
                unsigned int firerate1, std::string name1, bool full_auto1,
                 unsigned int magazine_size1, std::string magazine_type1 ):
 
@@ -122,7 +124,7 @@ weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int 
 
 weapon::Magazine::Magazine( int magazine_size1, std::string magazine_type1)
 {
-            std::cout<<"Dodajemy magazine\n";
+            std::cout<<"Dodajemy magazynek\n";
             magazine_type= magazine_type1;
             magazine_size= magazine_size1;
             ammo= magazine_size1;
@@ -158,7 +160,7 @@ void weapon::show()
 
     if(tripod_allowed==true) std::cout<< "Mozna zamontowac trójnóg" << std::endl;
 
-    else  std::cout<< "Nie mozna zamontowac trójnógu" << std::endl;
+    else  std::cout<< "Nie mozna zamontowac trójnogu" << std::endl;
 
     if(tripod==true)  std::cout<< "Trójnóg jest juz zamontowany" << std::endl;
 
@@ -180,10 +182,31 @@ void weapon::Magazine::reload()
     std::cout<<"Udało się uzupełnić magazine"<<std::endl;
 
 }
+
+std::string weapon::Magazine::get_type()
+{
+    return magazine_type;
+}
+
+unsigned int weapon::Magazine:: get_size()
+{
+    return magazine_size;
+}
+
+ unsigned int weapon::Magazine::get_ammo()
+ {
+     return ammo;
+ }
+void weapon::Magazine::reduce_ammo()
+{
+    ammo-=1;
+}
+
+
 void weapon::cool()
 {
     current_temp=temp;
-    std::cout<<"Lufa karabinu schlodzona do tempretury pokojowej"<<std::endl;
+    std::cout<<"Lufa karabinu schlodzona do temperatury pokojowej"<<std::endl;
 
 }
 
@@ -258,10 +281,12 @@ int weapon::fire ( unsigned int bullet, unsigned int distance, bool autofire  )
         effective_accuracy=0;
     }
 
-
+    #ifdef _DEBUG
     std:: cout<< std:: endl <<"Efektywna celnosc to: "<< effective_accuracy << std::endl;
 
     std:: cout<< std:: endl <<"Efektywny zasieg to: "<< effective_range << std::endl;
+
+    #endif // Debug
 
     for(int i=0;i<bullet; i++)
     {
@@ -270,7 +295,7 @@ int weapon::fire ( unsigned int bullet, unsigned int distance, bool autofire  )
             std:: cout<<"Przerywamy strzelanie, lufa przegrzana, trzeba ją schłodzić"<<std::endl;
             return hit;
         }
-        if( magazine.ammo==0 )
+        if( magazine.get_ammo() == 0 )
         {
             std:: cout<<"Nie ma już pocisków w magazynku, przerywamy strzelanie"<<std::endl;
             return hit;
@@ -281,7 +306,7 @@ int weapon::fire ( unsigned int bullet, unsigned int distance, bool autofire  )
             hit++;
         }
         current_temp+= 1;
-        magazine.ammo-=1;
+        magazine.reduce_ammo();
     }
     return hit;
 
@@ -337,6 +362,7 @@ void weapon::operator!()
      }
 
 }
+
 void weapon::operator&()
 {
       if(tripod==true)
@@ -350,4 +376,261 @@ void weapon::operator&()
      }
 
 }
+
+void weapon::operator+( weapon &x )
+{
+    unsigned int weight1, caliber1;
+    unsigned int accuracy1, firerate1, range1;
+    std::string name1;
+    bool full_auto1=false, silencer_allowed1=false, silencer1=false, tripod_allowed1=false, tripod1=false;
+
+    name1= name + "-" + x.name;
+
+    if( accuracy > x.accuracy)
+    {
+        accuracy1= accuracy;
+    }
+    else accuracy1= x.accuracy;
+
+    if( firerate > x.firerate)
+    {
+        firerate1=  firerate;
+    }
+    else firerate1= x.firerate;
+
+    if( range > x.range)
+    {
+        range1= this->range;
+    }
+    else range1= x.range;
+
+    if( weight < x.weight)
+    {
+        weight1= weight;
+    }
+    else weight1= x.weight;
+
+    if( caliber > x.caliber)
+    {
+        caliber1= caliber;
+    }
+    else caliber1= x.caliber;
+
+    if( tripod_allowed || x.tripod_allowed )
+    {
+        tripod_allowed1= true;
+    }
+
+    if( tripod|| x.tripod)
+    {
+        tripod1= true;
+    }
+
+    if( silencer_allowed || x.silencer_allowed)
+    {
+        silencer_allowed1= true;
+    }
+
+    if( silencer || x.silencer)
+    {
+        silencer1= true;
+    }
+
+    if( full_auto || x.full_auto)
+    {
+        full_auto1= true;
+    }
+
+    Menu::pom= new weapon(  range1,  weight1,  caliber1,   accuracy1,
+                    firerate1,  name1,  full_auto1,
+                    silencer_allowed1,  tripod_allowed1,  tripod1,  silencer1);
+
+    std::cout<< "Stworzono nową broń" << std::endl;
+    Menu::weapon_tab.push_back(Menu::pom);
+
+
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Testy
+ #ifdef _DEBUG
+
+void weapon::tests()
+{
+    test_T();
+    test_K();
+    test_O(); //test operatorów
+    test_S();
+    std::cout<<"Testy zakończone pomyślnie"<< std:: endl;
+    std::cin.get();
+    Menu::clean();
+
+}
+
+void weapon::test_T()
+{
+    //test temperatury
+    assert(weapon::temp==20);
+    weapon::change_temperature(-50);
+    assert(weapon::temp==-50);
+    weapon::change_temperature(50);
+    assert(weapon::temp==50);
+}
+
+void weapon::test_K()
+{
+
+    //test konstruktorów
+    Menu::pom= new weapon(  100,  100,  12,   12, 222 ,  "Kar98",  0,
+                  30,  "kołowy", 1,  0,  0,  1);
+
+    Menu::weapon_tab.push_back(Menu::pom);
+    assert(Menu::weapon_tab[0]->range==100);
+    assert(Menu::weapon_tab[0]->weight==100);
+    assert(Menu::weapon_tab[0]->caliber==12);
+    assert(Menu::weapon_tab[0]->accuracy==12);
+    assert(Menu::weapon_tab[0]->firerate==222);
+    assert(Menu::weapon_tab[0]->name=="Kar98");
+    assert(Menu::weapon_tab[0]->full_auto== false);
+    assert(Menu::weapon_tab[0]->magazine.get_size()==30);
+    assert(Menu::weapon_tab[0]->magazine.get_type()=="kołowy");
+    assert(Menu::weapon_tab[0]->silencer_allowed== true);
+    assert(Menu::weapon_tab[0]->tripod_allowed== false);
+    assert(Menu::weapon_tab[0]->tripod== false);
+    assert(Menu::weapon_tab[0]->silencer== true);
+
+    assert(Menu::weapon_tab.size()==1);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Konstruktor bez bajerów i ekstra magazynka
+
+    Menu::pom= new weapon(  300,  1,  71,  90, 20 ,  "Mosin",  0);
+
+    Menu::weapon_tab.push_back(Menu::pom);
+
+    assert(Menu::weapon_tab[1]->range==300);
+    assert(Menu::weapon_tab[1]->weight==1);
+    assert(Menu::weapon_tab[1]->caliber== 71);
+    assert(Menu::weapon_tab[1]->accuracy==90);
+    assert(Menu::weapon_tab[1]->firerate==20);
+    assert(Menu::weapon_tab[1]->name=="Mosin");
+    assert(Menu::weapon_tab[1]->full_auto== false);
+    assert(Menu::weapon_tab[1]->magazine.get_size()==30);
+    assert(Menu::weapon_tab[1]->magazine.get_type()=="standardowy");
+    assert(Menu::weapon_tab[1]->silencer_allowed== false);
+    assert(Menu::weapon_tab[1]->tripod_allowed== false);
+    assert(Menu::weapon_tab[1]->tripod== false);
+    assert(Menu::weapon_tab[1]->silencer== false);
+
+    assert(Menu::weapon_tab.size()==2);
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //// konstruktor z dodatkowym majerami bez magazynka
+
+    Menu::pom= new weapon(  200,  300,  56,  60, 600 ,  "Ak",  1, 1 ,1 ,1 ,1 );
+
+    Menu::weapon_tab.push_back(Menu::pom);
+
+    assert(Menu::weapon_tab[2]->range==200);
+    assert(Menu::weapon_tab[2]->weight==300);
+    assert(Menu::weapon_tab[2]->caliber== 56);
+    assert(Menu::weapon_tab[2]->accuracy==60);
+    assert(Menu::weapon_tab[2]->firerate==600);
+    assert(Menu::weapon_tab[2]->name=="Ak");
+    assert(Menu::weapon_tab[2]->full_auto== true);
+    assert(Menu::weapon_tab[2]->magazine.get_size()==30);
+    assert(Menu::weapon_tab[2]->magazine.get_type()=="standardowy");
+    assert(Menu::weapon_tab[2]->silencer_allowed== true);
+    assert(Menu::weapon_tab[2]->tripod_allowed== true);
+    assert(Menu::weapon_tab[2]->tripod== true);
+    assert(Menu::weapon_tab[2]->silencer== true);
+
+    assert(Menu::weapon_tab.size()==3);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    Menu::pom= new weapon(  400,  500,  76,  50, 20 ,  "47",  0 , 20, "prosty");
+
+    Menu::weapon_tab.push_back(Menu::pom);
+
+    assert(Menu::weapon_tab[3]->range==400);
+    assert(Menu::weapon_tab[3]->weight==500);
+    assert(Menu::weapon_tab[3]->caliber== 76);
+    assert(Menu::weapon_tab[3]->accuracy==50);
+    assert(Menu::weapon_tab[3]->firerate==20);
+    assert(Menu::weapon_tab[3]->name=="47");
+    assert(Menu::weapon_tab[3]->full_auto== false);
+    assert(Menu::weapon_tab[3]->magazine.get_size()==20);
+    assert(Menu::weapon_tab[3]->magazine.get_type()=="prosty");
+    assert(Menu::weapon_tab[3]->silencer_allowed== false);
+    assert(Menu::weapon_tab[3]->tripod_allowed== false);
+    assert(Menu::weapon_tab[3]->tripod== false);
+    assert(Menu::weapon_tab[3]->silencer== false);
+
+    assert(Menu::weapon_tab.size()==4);
+
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// Test operatorów
+ void weapon::test_O()
+ {
+     *(Menu::weapon_tab[2])+*(Menu::weapon_tab[3]);
+        assert(Menu::weapon_tab[4]->range==400);
+        assert(Menu::weapon_tab[4]->weight==300);
+        assert(Menu::weapon_tab[4]->caliber== 76);
+        assert(Menu::weapon_tab[4]->accuracy==60);
+        assert(Menu::weapon_tab[4]->firerate==600);
+        assert(Menu::weapon_tab[4]->name=="Ak-47");
+        assert(Menu::weapon_tab[4]->full_auto== true);
+        assert(Menu::weapon_tab[4]->magazine.get_size()==30);
+        assert(Menu::weapon_tab[4]->magazine.get_type()=="standardowy");
+        assert(Menu::weapon_tab[4]->silencer_allowed== true);
+        assert(Menu::weapon_tab[4]->tripod_allowed== true);
+        assert(Menu::weapon_tab[4]->tripod== true);
+        assert(Menu::weapon_tab[4]->silencer== true);
+
+        assert(Menu::weapon_tab.size()==5);
+
+        (*Menu::weapon_tab[4])++;
+        assert(Menu::weapon_tab[4]->silencer== true); // sprawdzamy czy nie dzieje się nicdziwneg przy np. próbie założenia tłumika kiedy jest już założony
+        (*Menu::weapon_tab[4])--;
+        assert(Menu::weapon_tab[4]->silencer== false);
+        (*Menu::weapon_tab[4])--;
+        assert(Menu::weapon_tab[4]->silencer== false);
+        (*Menu::weapon_tab[4])++;
+        assert(Menu::weapon_tab[4]->silencer== true);
+        !(*Menu::weapon_tab[4]);
+        assert(Menu::weapon_tab[4]->tripod== true);
+        &(*Menu::weapon_tab[4]);
+        assert(Menu::weapon_tab[4]->tripod== false);
+        &(*Menu::weapon_tab[4]);
+        assert(Menu::weapon_tab[4]->tripod== false);
+        !
+        (*Menu::weapon_tab[4]);
+        assert(Menu::weapon_tab[4]->tripod== true);
+
+
+
+ } //
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ // test metody strzelania i pokrewnych
+ void weapon::test_S()
+ {
+    assert(Menu::weapon_tab[4]->fire(30,1000,0)== 0); //przekraczamy zasięg maksymalny
+    assert(Menu::weapon_tab[4]->fire(30,20,0)== 0); // brak kul w magazynku
+    Menu::weapon_tab[4]->magazine.reload() ;
+    assert(Menu::weapon_tab[4]->magazine.get_ammo() == 30 );
+    Menu::weapon_tab[4]->magazine.reduce_ammo();
+    assert(Menu::weapon_tab[4]->magazine.get_ammo() == 29 );
+    Menu::weapon_tab[4]->fire(29,20,0);
+    assert(Menu::weapon_tab[4]->current_temp!= weapon::temp); //sprawdzamy czy wzrasta temperatura
+    Menu::weapon_tab[4]->magazine.reload() ;
+    assert(Menu::weapon_tab[4]->fire(30 , 20 , 1)==0);
+    assert(Menu::weapon_tab[4]->magazine.get_ammo() == 30);
+    Menu::weapon_tab[4]->cool(); // sprawdzamy czy lufa się schłodziła
+    assert(Menu::weapon_tab[4]-> current_temp== weapon::temp);
+
+
+ }
+
+  #endif
+
 

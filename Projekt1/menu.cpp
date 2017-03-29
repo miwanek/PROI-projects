@@ -28,11 +28,7 @@ using namespace std;
 
 void Menu::Mainmenu()
 {
-  //  temp=new weapon();
- //   Menu::weapon_tab.push_back(temp);
-  //  cout<<Menu::weapon_tab.size()<<endl;
-  //  getchar();
-  //  clean();
+
     char znak;
     char akcja;
     do
@@ -92,7 +88,7 @@ void Menu::Mainmenu()
 
 
                                 case '3':
-
+                                    look();
                                     break;
 
                                 case '4':
@@ -254,7 +250,7 @@ void Menu::Info2()
 
 void Menu::add()
 {
-    float weight1=-1, caliber1=-1;
+    unsigned int weight1= 0, caliber1= 0 ;
     unsigned int accuracy1=0, firerate1=0, magazine_size1=0, range1=0;
     string name1, magazine_type1;
     bool full_auto1, silencer_allowed1, silencer1, tripod_allowed1, tripod1, ekstra, mag;
@@ -284,16 +280,16 @@ void Menu::add()
     } while(firerate1<1);
 
     do{
-        cout<<endl<<"Podaj kaliber broni w milimetrach  "<<endl;
+        cout<<endl<<"Podaj kaliber broni w 1/10 milimetrów  "<<endl;
         cin>>caliber1;
         clean();
-    } while(caliber1<=0);
+    } while(caliber1==0);
 
     do{
-        cout<<endl<<"Podaj wage broni w kg  "<<endl;
+        cout<<endl<<"Podaj wage broni w gramach  "<<endl;
         cin>>weight1;
         clean();
-    } while(weight1<=0);
+    } while(weight1==0);
     do
     {
         clean();
@@ -422,6 +418,32 @@ void Menu:: aim(bool fire_mode)
 
     cout<<"Trafiłeś do celu "<<Menu::weapon_tab[weapon_nr]->fire(bullet, distance, fire_mode)<< " razy"<<endl;
 
+
+}
+void Menu:: look()
+{
+    int number=-1;
+
+    cout<< "Podaj numer broni do połączenia: ";
+    cin>> number;
+
+            if(cin.good()==false)
+            {
+                cout<<"Bledne dane"<<endl;
+                    cin.get();
+                    clean();
+                return;
+            }
+
+            for(unsigned int i=0; i< weapon_tab.size(); i++)
+                {
+                    if(number==static_cast<int>(i) && number!=weapon_nr)
+                    {
+                        (*weapon_tab[ weapon_nr ]) + (*weapon_tab[ number ]);
+                        weapon_nr= weapon_tab.size()-1;
+                        return;
+                    }
+                }
 
 }
 
