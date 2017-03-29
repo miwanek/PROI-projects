@@ -10,36 +10,49 @@ class weapon
 
         void show();
         void cool();
+        bool mode_check();
         static void change_temperature(int celc);
         static void current_temperature();
-        int fire();
-        int autofire();
+        int fire(unsigned int bullet, unsigned int distance, bool autofire= false );
         void operator--(int);
         void operator++(int);
         void operator!();
         void operator&();
         std:: string name;
 
-        class magazine
+        class Magazine
             {
 
             public:
                 void reload();
                 void show2();
-                magazine( int magazine_size1, std::string magazine_type1);
-                ~magazine();
+                unsigned int ammo; // liczba kul w obecnym magazynku
+
+                Magazine( int magazine_size1, std::string magazine_type1);
+                ~Magazine();
 
             private:
                 std::string magazine_type;
-                unsigned int ammo; // liczba kul w obecnym magazynku
                 unsigned int magazine_size;
             };
-        magazine magazynek;
+        Magazine magazine;
 
 
         weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
               unsigned int firerate1, std::string name1, bool full_auto1,
                unsigned int magazine_size1, std::string magazine_type1, bool silencer_allowed1, bool tripod_allowed1, bool tripod1, bool silencer1);
+
+        weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
+              unsigned int firerate1, std::string name1, bool full_auto1,
+               bool silencer_allowed1, bool tripod_allowed1, bool tripod1, bool silencer1);
+
+        weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
+              unsigned int firerate1, std::string name1, bool full_auto1 );
+
+        weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
+              unsigned int firerate1, std::string name1, bool full_auto1,
+               unsigned int magazine_size1, std::string magazine_type1);
+
 
 
 

@@ -11,12 +11,11 @@
 void Menu();
 void clean();
 
-
 using namespace std;
 
 int main()
 {
-
+    srand(time(NULL));
     #ifdef _DEBUG
         cout << "Testujemy tralalala"<<endl;
     #endif

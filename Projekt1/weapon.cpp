@@ -1,5 +1,10 @@
-#include "weapon.h"
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
+
+
+#include "weapon.h"
+
 
 void clean();
 int weapon::temp=20;
@@ -9,33 +14,7 @@ weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int 
                unsigned int firerate1, std::string name1, bool full_auto1,
                 unsigned int magazine_size1, std::string magazine_type1, bool silencer_allowed1, bool tripod_allowed1, bool tripod1, bool silencer1):
 
-    magazynek( magazine_size1 , magazine_type1 ),
-    range( range1 ),
-    weight( weight1 ),
-    caliber( caliber1 ),
-    current_temp( temp ),
-    silencer_allowed( silencer_allowed1 ),
-    silencer( silencer1 ),
-    tripod_allowed( tripod_allowed1 ),
-    tripod( tripod ),
-    accuracy( accuracy1 ),
-    firerate( firerate1 ),
-    name( name1 ),
-    full_auto( full_auto1 )
-{
-
-    std::cout<< "Tworzymy nowy obiekt\n";
-
-    std::cout<<"Proces zakończony sukcesem\n";
-    return;
-
-}
-
-/* weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
-               unsigned int firerate1, std::string name1, bool full_auto1,
-                unsigned int magazine_size1, std::string magazine_type1, bool silencer_allowed1, bool tripod_allowed1, bool tripod1, bool silencer1 ):
-
-    magazynek( magazine_size1 , magazine_type1 ),
+    magazine( magazine_size1 , magazine_type1 ),
     range( range1 ),
     weight( weight1 ),
     caliber( caliber1 ),
@@ -53,12 +32,97 @@ weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int 
     std::cout<< "Tworzymy nowy obiekt\n";
 
     std::cout<<"Proces zakończony sukcesem\n";
-    return; */
+    return;
 
-//}
-weapon::magazine::magazine( int magazine_size1, std::string magazine_type1)
+}
+
+// Standradowy magazynek i ekstra bajery
+weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
+               unsigned int firerate1, std::string name1, bool full_auto1,
+                 bool silencer_allowed1, bool tripod_allowed1, bool tripod1, bool silencer1):
+
+    magazine( 30 , "standardowy" ),
+    range( range1 ),
+    weight( weight1 ),
+    caliber( caliber1 ),
+    current_temp( temp ),
+    silencer_allowed( silencer_allowed1 ),
+    silencer( silencer1 ),
+    tripod_allowed( tripod_allowed1 ),
+    tripod( tripod1 ),
+    accuracy( accuracy1 ),
+    firerate( firerate1 ),
+    name( name1 ),
+    full_auto( full_auto1 )
 {
-            std::cout<<"Dodajemy magazynek\n";
+
+    std::cout<< "Tworzymy nowy obiekt\n";
+
+    std::cout<<"Proces zakończony sukcesem\n";
+    return;
+
+}
+
+// Standradowy magazynek bez ekstra bajerów
+weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
+               unsigned int firerate1, std::string name1, bool full_auto1 ):
+
+    magazine( 30 , "standardowy" ),
+    range( range1 ),
+    weight( weight1 ),
+    caliber( caliber1 ),
+    current_temp( temp ),
+    silencer_allowed( 0 ),
+    silencer( 0 ),
+    tripod_allowed( 0 ),
+    tripod( 0 ),
+    accuracy( accuracy1 ),
+    firerate( firerate1 ),
+    name( name1 ),
+    full_auto( full_auto1 )
+{
+
+    std::cout<< "Tworzymy nowy obiekt\n";
+
+    std::cout<<"Proces zakończony sukcesem\n";
+    return;
+
+}
+
+// Specjalny magazynek bez ekstra bajerów
+weapon::weapon(unsigned int range1, float weight1, float caliber1, unsigned int accuracy1,
+               unsigned int firerate1, std::string name1, bool full_auto1,
+                unsigned int magazine_size1, std::string magazine_type1 ):
+
+    magazine( magazine_size1 , magazine_type1 ),
+    range( range1 ),
+    weight( weight1 ),
+    caliber( caliber1 ),
+    current_temp( temp ),
+    silencer_allowed( 0 ),
+    silencer( 0 ),
+    tripod_allowed( 0 ),
+    tripod( 0 ),
+    accuracy( accuracy1 ),
+    firerate( firerate1 ),
+    name( name1 ),
+    full_auto( full_auto1 )
+{
+
+    std::cout<< "Tworzymy nowy obiekt\n";
+
+    std::cout<<"Proces zakończony sukcesem\n";
+    return;
+
+}
+
+
+
+
+
+weapon::Magazine::Magazine( int magazine_size1, std::string magazine_type1)
+{
+            std::cout<<"Dodajemy magazine\n";
             magazine_type= magazine_type1;
             magazine_size= magazine_size1;
             ammo= magazine_size1;
@@ -66,11 +130,11 @@ weapon::magazine::magazine( int magazine_size1, std::string magazine_type1)
 }
 
 
-weapon::magazine::~magazine()
+weapon::Magazine::~Magazine()
 {
-            std::cout<<"Usuwamy magazynek\n";
+            std::cout<<"Usuwamy magazine\n";
 }
-void weapon::magazine::show2()
+void weapon::Magazine::show2()
 {
     std::cout<<"Rodzaj magazynka: "<< magazine_type <<std::endl;
     std::cout<<"Rozmiar magazynka: "<< magazine_size <<std::endl;
@@ -80,7 +144,7 @@ void weapon::show()
 {
     std::cout<<"Parametry wybranej broni to: \n";
     std::cout<<"Nazwa:"<< name <<std::endl;
-    magazynek.show2();
+    magazine.show2();
     std::cout<<"Temperatura lufy: "<<current_temp <<std::endl;
     std::cout<<"Zasieg skuteczny: "<< range <<std::endl;
     std::cout<<"Kaliber broni: "<< caliber <<std::endl;
@@ -92,28 +156,28 @@ void weapon::show()
 
     else std::cout<<"Bron nie  moze strzelac ogniem automatycznym"<<std::endl;
 
-    if(tripod_allowed==true) std::cout<< "Mozna zamontowac trojnog" << std::endl;
+    if(tripod_allowed==true) std::cout<< "Mozna zamontowac trójnóg" << std::endl;
 
-    else  std::cout<< "Nie mozna zamontowac trojnog" << std::endl;
+    else  std::cout<< "Nie mozna zamontowac trójnógu" << std::endl;
 
-    if(tripod==true)  std::cout<< "Trojnog jest juz zamontowany" << std::endl;
+    if(tripod==true)  std::cout<< "Trójnóg jest juz zamontowany" << std::endl;
 
-    if(tripod==false && tripod_allowed==true)  std::cout<< "Trojnog nie jest jeszcze zamontowany" << std::endl;
+    if(tripod==false && tripod_allowed==true)  std::cout<< "Trójnóg nie jest jeszcze zamontowany" << std::endl;
 
-    if(silencer_allowed == true) std::cout<< "Mozna zamontowac tlumik" << std::endl;
+    if(silencer_allowed == true) std::cout<< "Mozna zamontowac tłumik" << std::endl;
 
     else  std::cout<< "Nie mozna zamontowac tlumika" << std::endl;
 
-    if(silencer==true)  std::cout<< "Tlumik jest juz zamontowany" << std::endl;
+    if(silencer==true)  std::cout<< "Tłumik jest juz zamontowany" << std::endl;
 
-    if(silencer==false && silencer_allowed==true)  std::cout<< "Tlumik nie jest jeszcze zamontowany" << std::endl;
+    if(silencer==false && silencer_allowed==true)  std::cout<< "Tłumik nie jest jeszcze zamontowany" << std::endl;
 
 }
 
-void weapon::magazine::reload()
+void weapon::Magazine::reload()
 {
     ammo=magazine_size;
-    std::cout<<"Udało się uzupełnić magazynek"<<std::endl;
+    std::cout<<"Udało się uzupełnić magazine"<<std::endl;
 
 }
 void weapon::cool()
@@ -155,6 +219,82 @@ void weapon::operator--(int)
      }
 
 }
+
+int weapon::fire ( unsigned int bullet, unsigned int distance, bool autofire  )
+{
+    int hit=0;
+    unsigned int effective_accuracy=accuracy;
+    unsigned int shoot;
+    unsigned int effective_range=range;
+
+    if(autofire==true)
+    {
+        effective_accuracy*=0.8;
+    }
+
+    if(silencer==true)
+    {
+        effective_range*=0.8;
+    }
+
+    if( distance > range && (range*2)>=distance)
+    {
+        effective_accuracy/=2;
+    }
+
+    if(tripod==true)
+    {
+        effective_accuracy+=10;
+        if(effective_accuracy > 100 )
+        {
+            effective_accuracy=100;
+        }
+
+    }
+
+
+    if( (range*2) < distance )
+    {
+        effective_accuracy=0;
+    }
+
+
+    std:: cout<< std:: endl <<"Efektywna celnosc to: "<< effective_accuracy << std::endl;
+
+    std:: cout<< std:: endl <<"Efektywny zasieg to: "<< effective_range << std::endl;
+
+    for(int i=0;i<bullet; i++)
+    {
+        if(current_temp>=100)
+        {
+            std:: cout<<"Przerywamy strzelanie, lufa przegrzana, trzeba ją schłodzić"<<std::endl;
+            return hit;
+        }
+        if( magazine.ammo==0 )
+        {
+            std:: cout<<"Nie ma już pocisków w magazynku, przerywamy strzelanie"<<std::endl;
+            return hit;
+        }
+        shoot= rand()%100 +1;
+        if( shoot <= effective_accuracy)
+        {
+            hit++;
+        }
+        current_temp+= 1;
+        magazine.ammo-=1;
+    }
+    return hit;
+
+
+}
+
+
+bool weapon::mode_check()
+{
+    return full_auto;
+}
+
+
 
 void weapon::operator++(int)
 {

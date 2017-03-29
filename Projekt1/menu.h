@@ -24,6 +24,8 @@ class Menu
         static void Info2();
         static void Info3();
         static void add();
+        static void aim(bool fire_mode);
+
         static std::vector<weapon*> weapon_tab;
         static weapon* pom;
 
