@@ -50,7 +50,6 @@ void Menu::Mainmenu()
         case '2':
             cout<< "Podaj poprawny  numer broni: ";
             cin>> weapon_nr; // podajemy nr broni na której będziemy dookonwyać operacji
-            clean();
             if(cin.good()==false)
             {
                 cout<<"Bledne dane"<<endl;
@@ -58,6 +57,7 @@ void Menu::Mainmenu()
                     clean();
                 break;
             }
+            clean();
                 for(unsigned int i=0; i<Menu::weapon_tab.size(); i++)
                 {
                     if(weapon_nr==static_cast<int>(i)) //rzutowanie dla pewności
