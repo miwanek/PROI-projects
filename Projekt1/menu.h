@@ -21,10 +21,10 @@ class Menu
         static void Mainmenu();
         static void Info1();
         static void clean();
-        static void Info2();
+        static void Info2(); // funkcje zarządzające interfejsem użytkownika
         static void Info3();
-        static void add();
-        static void look();
+        static void add();  //podajemy parametry broni do dodania
+        static void look(); // podajemy parametry broni do połączenia
 
 
 
@@ -33,9 +33,9 @@ class Menu
         static std::vector<weapon*> weapon_tab;
         static weapon* pom;
 
-        static int weapon_nr;
+        static int weapon_nr; // numer wskazywanej broni
         static int celc;
-        static bool bylo;
+        static bool bylo; //flaga czy w ogóle jeest taka broń w składzie
         static bool start;
 
 

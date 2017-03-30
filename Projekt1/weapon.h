@@ -9,16 +9,16 @@ class weapon
 {
     public:
 
-        void show();
-        void cool();
+        void show(); //pokazanie parametrów
+        void cool(); //schłodzenie lufy
         bool mode_check();
-        static void change_temperature(int celc);
+        static void change_temperature(int celc); // zmiana temperatury otoczenia
         static void current_temperature();
-        int fire(unsigned int bullet, unsigned int distance, bool autofire= false );
-        void operator--(int);
-        void operator++(int);
-        void operator!();
-        void operator&();
+        int fire(unsigned int bullet, unsigned int distance, bool autofire= false ); //strzelanie do celu
+        void operator--(int); //zdjęcie tłumika
+        void operator++(int); //zamontowanie tłumika
+        void operator!(); // rozłożenie trójnogu
+        void operator&(); // złożenie trójnogu
         void operator+(  weapon &x);
 
          #ifdef _DEBUG
@@ -38,15 +38,15 @@ class weapon
             {
 
             public:
-                void reload();
+                void reload(); //przeładowanie magazynka
                 void show2();
                 std::string get_type();
-                unsigned int get_size();
+                unsigned int get_size(); //funkcje zwracające wartość odpowienich parametrów
                 unsigned int get_ammo();
                 void reduce_ammo();
                 // liczba kul w obecnym magazynku
 
-                Magazine( int magazine_size1, std::string magazine_type1);
+                Magazine( int magazine_size1, std::string magazine_type1); //konstruktor
                 ~Magazine();
 
             private:
@@ -56,6 +56,7 @@ class weapon
             };
         Magazine magazine;
 
+        //konstruktory z odpowiednimi parametrami
 
         weapon(unsigned int range1, unsigned int weight1, unsigned int caliber1, unsigned int accuracy1,
               unsigned int firerate1, std::string name1, bool full_auto1,
@@ -75,7 +76,7 @@ class weapon
 
 
 
-        ~weapon();
+        ~weapon(); //destruktor
 
     private:
 

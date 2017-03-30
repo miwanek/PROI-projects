@@ -15,8 +15,9 @@ using namespace std;
 
 int main()
 {
-    srand(time(NULL));
-    #ifdef _DEBUG
+    srand(time(NULL)); //inicjujemy generator liczb pseudolosowych
+    #ifdef _DEBUG //testy
+
         weapon::tests();
 
     #endif

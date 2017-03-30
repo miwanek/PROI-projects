@@ -120,7 +120,7 @@ weapon::weapon(unsigned int range1, unsigned int weight1, unsigned int caliber1,
 
 
 
-
+//konstruktor magazynka
 
 weapon::Magazine::Magazine( int magazine_size1, std::string magazine_type1)
 {
@@ -131,18 +131,20 @@ weapon::Magazine::Magazine( int magazine_size1, std::string magazine_type1)
 
 }
 
-
+//destruktor magazynka
 weapon::Magazine::~Magazine()
 {
             std::cout<<"Usuwamy magazine\n";
 }
-void weapon::Magazine::show2()
+
+void weapon::Magazine::show2() //parametry magazynka
 {
     std::cout<<"Rodzaj magazynka: "<< magazine_type <<std::endl;
     std::cout<<"Rozmiar magazynka: "<< magazine_size <<std::endl;
     std::cout<<"Obecnie liczba kul w magazynku: "<< ammo <<std::endl;
 }
-void weapon::show()
+
+void weapon::show() //parametry broni
 {
     std::cout<<"Parametry wybranej broni to: \n";
     std::cout<<"Nazwa:"<< name <<std::endl;
@@ -229,7 +231,7 @@ weapon::~weapon()
     std::cout<<"Uwaga, uwaga podana bron zostanie wlasnie usunieta\n";
 }
 
-void weapon::operator--(int)
+void weapon::operator--(int) //zdejmowanie tłumika
 {
      if(silencer==true)
      {
@@ -243,29 +245,29 @@ void weapon::operator--(int)
 
 }
 
-int weapon::fire ( unsigned int bullet, unsigned int distance, bool autofire  )
+int weapon::fire ( unsigned int bullet, unsigned int distance, bool autofire  ) //na początek zakładamy, ze udało się wystrzelić 0 kul
 {
     int hit=0;
     unsigned int effective_accuracy=accuracy;
     unsigned int shoot;
     unsigned int effective_range=range;
 
-    if(autofire==true)
+    if(autofire==true) // jeśli ogień automatyczny to zmniejszamy efektywną celność
     {
         effective_accuracy*=0.8;
     }
 
-    if(silencer==true)
+    if(silencer==true)  // jeśli tłumik jest założony to zmniejszamy efektywny zasięg
     {
-        effective_range*=0.8;
+        effective_range*=0.9;
     }
 
-    if( distance > range && (range*2)>=distance)
+    if( distance > range && (range*2)>=distance)  // jeśli efektywny zasięg przekroczony to zmniejszamy celność
     {
         effective_accuracy/=2;
     }
 
-    if(tripod==true)
+    if(tripod==true) //jeśli trójnóg zamontowany to zwiększamy celność ostrzału
     {
         effective_accuracy+=10;
         if(effective_accuracy > 100 )
@@ -276,7 +278,7 @@ int weapon::fire ( unsigned int bullet, unsigned int distance, bool autofire  )
     }
 
 
-    if( (range*2) < distance )
+    if( (range*2) < distance ) // jeśli przekroczymy zasięg dwukrotnie to celność spada do zera
     {
         effective_accuracy=0;
     }
@@ -288,7 +290,7 @@ int weapon::fire ( unsigned int bullet, unsigned int distance, bool autofire  )
 
     #endif // Debug
 
-    for(int i=0;i<bullet; i++)
+    for(int i=0;i<bullet; i++) // właściwe strzelanie
     {
         if(current_temp>=100)
         {
@@ -300,13 +302,13 @@ int weapon::fire ( unsigned int bullet, unsigned int distance, bool autofire  )
             std:: cout<<"Nie ma już pocisków w magazynku, przerywamy strzelanie"<<std::endl;
             return hit;
         }
-        shoot= rand()%100 +1;
-        if( shoot <= effective_accuracy)
+        shoot= rand()%100 +1; // losujemy liczbe z zakresu 1-100
+        if( shoot <= effective_accuracy) // jeśli nalezy do zakresu celności broni to zaliczamy trafienie
         {
             hit++;
         }
-        current_temp+= 1;
-        magazine.reduce_ammo();
+        current_temp+= 1; // podwyższamy temperature lufy
+        magazine.reduce_ammo(); // wywołujemy funkcję usuwającą łuski z broni
     }
     return hit;
 
@@ -314,14 +316,14 @@ int weapon::fire ( unsigned int bullet, unsigned int distance, bool autofire  )
 }
 
 
-bool weapon::mode_check()
+bool weapon::mode_check() // sprawdza czy tryb automatyczny jest dozwolony
 {
     return full_auto;
 }
 
 
 
-void weapon::operator++(int)
+void weapon::operator++(int) //zakładanie tłumika
 {
 
      if(silencer==true )
@@ -341,7 +343,7 @@ void weapon::operator++(int)
      }
 
 }
-void weapon::operator!()
+void weapon::operator!()  //rozkładanie trójnogu
 {
 
     if(tripod==true )
@@ -363,7 +365,7 @@ void weapon::operator!()
 
 }
 
-void weapon::operator&()
+void weapon::operator&()  //składanie trójnogu
 {
       if(tripod==true)
      {
@@ -377,7 +379,7 @@ void weapon::operator&()
 
 }
 
-void weapon::operator+( weapon &x )
+void weapon::operator+( weapon &x ) // tworzenie nowego obiektu wybierając lepsze elemnty z 2 broni
 {
     unsigned int weight1, caliber1;
     unsigned int accuracy1, firerate1, range1;
@@ -598,7 +600,7 @@ void weapon::test_K()
         (*Menu::weapon_tab[4])++;
         assert(Menu::weapon_tab[4]->silencer== true);
         !(*Menu::weapon_tab[4]);
-        assert(Menu::weapon_tab[4]->tripod== true);
+        assert(Menu::weapon_tab[4]->tripod== true); //to samo dla trójnogu
         &(*Menu::weapon_tab[4]);
         assert(Menu::weapon_tab[4]->tripod== false);
         &(*Menu::weapon_tab[4]);

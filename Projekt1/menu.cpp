@@ -16,12 +16,12 @@ using namespace std;
 
 
 
- std::vector<weapon*> Menu::weapon_tab;
+ std::vector<weapon*> Menu::weapon_tab; //wektor przetrzymujący wskazniki na bronie
  weapon* Menu::pom;
 
     int Menu::weapon_nr;
-    int Menu::celc;
-    bool Menu::bylo;
+    int Menu::celc; // zmienna pomocnicza do przekzywania  temperatury do funkcji change_temperature
+    bool Menu::bylo; // flaga czy dany element jest w bazie
     bool Menu::start;
 
 
@@ -29,19 +29,19 @@ using namespace std;
 void Menu::Mainmenu()
 {
 
-    char znak;
+    char znak; // dwie zmienne do zarzadzania menu
     char akcja;
     do
     {
 
-    Info1();
-    znak=cin.get();
-    clean();
+    Info1(); // inforamcje dla użytkowanika o możliwych opcjach w menu
+    znak=cin.get(); // pobieramy znak zarządzający co teraz się będzie dziać
+    clean(); // funkcja czyszcząca
         switch(znak)
         {
         case '1':
             cout<<"To wszystkie bronie jakie sie obecnie znajduja w strzelnicy"<<endl<<endl;
-            for(unsigned int i=0;i<Menu::weapon_tab.size();i++)
+            for(unsigned int i=0;i<Menu::weapon_tab.size();i++) // przeszukujemy od 0 do rozmiaru wketora-1
             {
                 cout<<"Bron o numerze: " <<i<<" znana jako: "<<Menu::weapon_tab[i]->name<<endl;
             }
@@ -49,7 +49,7 @@ void Menu::Mainmenu()
 
         case '2':
             cout<< "Podaj poprawny  numer broni: ";
-            cin>> weapon_nr;
+            cin>> weapon_nr; // podajemy nr broni na której będziemy dookonwyać operacji
             clean();
             if(cin.good()==false)
             {
@@ -60,15 +60,15 @@ void Menu::Mainmenu()
             }
                 for(unsigned int i=0; i<Menu::weapon_tab.size(); i++)
                 {
-                    if(weapon_nr==static_cast<int>(i))
+                    if(weapon_nr==static_cast<int>(i)) //rzutowanie dla pewności
                         {
-                        Menu::weapon_tab[weapon_nr]->cool();
-                        bool fire_mode;
+                        Menu::weapon_tab[weapon_nr]->cool(); // Jeśli wyjmujemy broń z półki to musi mieć temperature otoczenia
+                        bool fire_mode; // czy tryb automatyczny jest włączony
                            do
                            {
                                 system("clear");
                                 cout<< "Wybrales bron o nazwie: "<< Menu::weapon_tab[weapon_nr]->name <<" oraz numerze: "<< weapon_nr << endl << endl;
-                                Info2();
+                                Info2(); // kolejne menu z informacjami lda użykownika co może wybrać
                                 akcja=cin.get();
                                 clean();
                             switch(akcja)
@@ -76,26 +76,26 @@ void Menu::Mainmenu()
 
                                 case '1':
 
-                                    Menu::weapon_tab[weapon_nr]->show();
+                                    Menu::weapon_tab[weapon_nr]->show(); // wypisujemy parametry broni
                                     break;
 
                                 case '2':
 
                                     delete Menu::weapon_tab[weapon_nr];
-                                    Menu::weapon_tab.erase(Menu::weapon_tab.begin() + weapon_nr);
+                                    Menu::weapon_tab.erase(Menu::weapon_tab.begin() + weapon_nr); //usuwamy broń z wektora i pamięci
                                     cout<< "Usunieto bron z bazy \n \n";
                                     break;
 
 
                                 case '3':
-                                    look();
+                                    look(); // funkcja obsługująca dodawania broni
                                     break;
 
                                 case '4':
 
-                                    fire_mode=false;
+                                    fire_mode=false; //
                                     cout<< "Strzelasz do tarczy ogniem pojedynczym" << endl;
-                                    Menu::aim(fire_mode);
+                                    Menu::aim(fire_mode); //przekazujemy tryb ognia do funkcji obsługującej strzelanie do celu
 
 
                                     break;
@@ -111,47 +111,47 @@ void Menu::Mainmenu()
                                     {
                                         fire_mode=true;
                                         cout<< "Strzelasz do tarczy ogniem automatycznym" << endl;
-                                        Menu::aim(fire_mode);
+                                        Menu::aim(fire_mode); //przekazujemy tryb ognia do funkcji obsługującej strzelanie do celu
                                         break;
                                     }
 
 
                                 case '6':
 
-                                    Menu::weapon_tab[weapon_nr]->magazine.reload();
+                                    Menu::weapon_tab[weapon_nr]->magazine.reload(); //przeładowujemy magazynek
                                     break;
 
                                 case '7':
 
-                                    Menu::weapon_tab[weapon_nr]->cool();
+                                    Menu::weapon_tab[weapon_nr]->cool(); //schładzamy lufę
                                     break;
 
                                 case '8':
-                                    (*Menu::weapon_tab[weapon_nr])++;
+                                    (*Menu::weapon_tab[weapon_nr])++; //zakładamy tłumik jesli to możliwe
                                     break;
 
                                 case '9':
-                                    (*Menu::weapon_tab[weapon_nr])--;
+                                    (*Menu::weapon_tab[weapon_nr])--;  //zdejmujemy tłumik jesli to możliwe
                                     break;
 
                                 case '0':
-                                    !(*Menu::weapon_tab[weapon_nr]);
+                                    !(*Menu::weapon_tab[weapon_nr]);  //zakładamy trójnóg jesli to możliwe
                                     break;
 
                                 case 'a':
-                                    &(*Menu::weapon_tab[weapon_nr]);
+                                    &(*Menu::weapon_tab[weapon_nr]);  //zdejmujemy trójnóg  jesli to możliwe
                                     break;
 
-                                case 'b':
+                                case 'b': //wyjsce z  menu
                                     break;
 
                                 default:
                                     break;
                             }
                             cin.get();
-                            clean();
+                            clean(); //czyszczenie strumienia
 
-                            } while(akcja!='b'&& akcja != '2');
+                            } while(akcja!='b'&& akcja != '2'); // warunek sprawdzający czy czas już kończyć
                         bylo=true;
                     }
                 }
@@ -162,7 +162,7 @@ void Menu::Mainmenu()
             {
                {
 
-                    add();
+                    add(); // wywołanie funkcji obsługującej wczytywanie danych dla nowej broni
 
                 }
             break;
@@ -170,22 +170,22 @@ void Menu::Mainmenu()
         case '4':
                 do
                     {
-                if(start==false)
+                if(start==false) // jeśli nic jeszcze nie wczytywaliśmy nie ma sensu wykonwyać tych dwóch operacji
                     {
                         std::cin.clear();
-                        std::cin.ignore(10000,'\n');
+                        std::cin.ignore(10000,'\n'); //czyszczenie strumienia
                     }
                     std::cout<< "Podaj obecna temperature otoczenia z zakresu +-50 stopni celcjusza"<< std::endl;
                     std::cin>>celc;
                     start=false;
                 }
-                while(celc>50||celc<-50||std::cin.fail());
-            weapon::change_temperature(celc);
+                while(celc>50||celc<-50||std::cin.fail()); // sprawdzamy czy temperatura to nie jest np. -300 stopni celcjusza
+            weapon::change_temperature(celc); // zmieniamy temperature otoczenia
             break;
 
         case '5':
 
-            weapon::current_temperature();
+            weapon::current_temperature(); // wypisanie aktualnej tempereatury otoczenia
             break;
 
         case '6':
@@ -201,12 +201,12 @@ void Menu::Mainmenu()
     cin.get();
     clean();
     }
-    while(znak!='6');
+    while(znak!='6'); //strażnik czy już kończymy
    // cout<<Menu::weapon_tab.size()<<endl;
 
 
 }
-void Menu::clean()
+void Menu::clean() // funkcja czyszcząco strumień wejściowy
 {
     cin.clear();
     cin.ignore(10000,'\n');
@@ -223,15 +223,15 @@ void Menu::Info1()
     cout<<"Wybierz 4, aby zmienic temperature otoczenia" << endl;
     cout<<"Wybierz 5, aby pokazac temperature otoczenia" << endl;
     cout<<"Wciśnij 6, aby wyjsc z programu"<<endl;
-    weapon_nr=-1;
-    celc= -100;
+    weapon_nr=-1; // wartości zabezpieczające
+    celc= -100;//
     bylo=false;
     start=true;
 
 
 }
 
-void Menu::Info2()
+void Menu::Info2() //kolejny help dla użytkownika
 {
             cout<< "Co chcesz zrobic?" << endl;
             cout<< "Wybierz 1, aby wyswietlic parametry broni" << endl;
@@ -251,9 +251,9 @@ void Menu::Info2()
 void Menu::add()
 {
     unsigned int weight1= 0, caliber1= 0 ;
-    unsigned int accuracy1=0, firerate1=0, magazine_size1=0, range1=0;
+    unsigned int accuracy1=0, firerate1=0, magazine_size1=0, range1=0; //parametry broni
     string name1, magazine_type1;
-    bool full_auto1, silencer_allowed1, silencer1, tripod_allowed1, tripod1, ekstra, mag;
+    bool full_auto1, silencer_allowed1, silencer1, tripod_allowed1, tripod1, ekstra, mag; //flagi do elementów dodatkowych niestandardoweg magazynka, trójnogu
 
     cout<<"Podaj poprawne parametry broni"<<endl;
     cout<<"Wpisz nazwe broni"<<endl;
@@ -362,7 +362,7 @@ void Menu::add()
                 }
                 else tripod1=false;
         }
-    if(ekstra==true&&mag==true)
+    if(ekstra==true&&mag==true) //różne konstruktóry dla odpowiednich danych /wszystko
     {
         pom= new weapon(  range1,  weight1,  caliber1,   accuracy1,
                  firerate1,  name1,  full_auto1,
@@ -370,33 +370,33 @@ void Menu::add()
                   silencer_allowed1,  tripod_allowed1,  tripod1,  silencer1);
     }
 
-    if(ekstra==true&&mag==false)
+    if(ekstra==true&&mag==false) // dodatkowe elementy, ale standardowy magazynek
     {
         pom= new weapon(  range1,  weight1,  caliber1,   accuracy1,
                  firerate1,  name1,  full_auto1,
                   silencer_allowed1,  tripod_allowed1,  tripod1,  silencer1);
     }
 
-    if(ekstra==false&&mag==false)
+    if(ekstra==false&&mag==false) // bez zbędnych bajerów i zwykły magazynek
     {
         pom= new weapon(  range1,  weight1,  caliber1,   accuracy1,
                  firerate1,  name1,  full_auto1 );
 
     }
 
-    if(ekstra==false&&mag==true)
+    if(ekstra==false&&mag==true) // niestandardowy magazynek i brak dodatkowych elementów
     {
         pom= new weapon(  range1,  weight1,  caliber1,   accuracy1,
                  firerate1,  name1,  full_auto1,
                   magazine_size1,  magazine_type1 );
     }
 
-    weapon_tab.push_back(pom);
+    weapon_tab.push_back(pom); //dodajemy broń na wektor
 
 
 }
 
-void Menu:: aim(bool fire_mode)
+void Menu:: aim(bool fire_mode) //podajemy w funkcji liczbe kul jakie chcemy wystrzelić i odległosć celu
 {
     unsigned int bullet, distance;
 
@@ -420,7 +420,7 @@ void Menu:: aim(bool fire_mode)
 
 
 }
-void Menu:: look()
+void Menu:: look() // szukamy broni do operatora dodawania
 {
     int number=-1;
 
